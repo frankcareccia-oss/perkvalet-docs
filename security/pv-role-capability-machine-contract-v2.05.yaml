@@ -1,0 +1,52 @@
+# PerkValet Machine Role Contract
+# Source of truth for roles, capabilities, hooks, and invariants.
+# Intended consumers:
+# - backend authorization / policy enforcement
+# - admin and merchant UI visibility rules
+# - QA automation and regression matrices
+# - support tooling and chatbot policy
+# Keep this file versioned with the codebase and update intentionally.
+
+VERSION: 2.05
+TYPE: MACHINE_INGEST
+
+ROLES:
+  PLATFORM_ADMIN:
+    - onboard_merchant
+    - grant_support_access
+
+  SUPPORT:
+    - billing_help
+    - payment_issue_resolution
+
+  MERCHANT_ADMIN:
+    - manage_users
+    - products
+    - rewards
+
+  MERCHANT_AP:
+    - receive_invoice
+    - pay_invoice
+
+  PAYER:
+    - pay_invoice_only
+
+HOOKS:
+  QA:
+    - validate_flow
+    - regression
+
+  SUPPORT:
+    - trace_events
+    - customer_context
+
+  DOCS:
+    - generate_reference
+
+  CHATBOT:
+    - contextual_help
+
+INVARIANTS:
+  - Admin never pays invoices
+  - Support assists but does not pay
+  - Payer only pays, no admin actions
